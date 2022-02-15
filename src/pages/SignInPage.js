@@ -73,6 +73,7 @@ const SignInPage = () => {
                             {...register('password')}
                             placeholder="Password"
                             autoComplete="off"
+                            type="password"
                         />
 
                         <button className="bg-form-submit rounded text-base border-none p-4 font-bold text-white cursor-pointer">

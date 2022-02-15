@@ -1,25 +1,35 @@
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+// CSS
+import './assets/css/app.css';
+import useAuth from './hooks/useAuth';
+import PrivateRoute from './routes/PrivateRoute';
+
+import LazyLoading from './utils/lazyLoading';
+
+// Pages
+const SignInPage = LazyLoading(() => import('./pages/SignInPage'));
+const SignUpPage = LazyLoading(() => import('./pages/SignUpPage'));
+const BrowsePage = LazyLoading(() => import('./pages/BrowsePage'));
+
+const App = () => {
+    const { user } = useAuth();
+    return (
+        <Router>
+            <Routes>
+                <Route
+                    path="/"
+                    element={
+                        <PrivateRoute user={user}>
+                            <BrowsePage />
+                        </PrivateRoute>
+                    }
+                />
+                <Route path="login" element={<SignInPage />} />
+                <Route path="signup" element={<SignUpPage />} />
+            </Routes>
+        </Router>
+    );
+};
 
 export default App;
